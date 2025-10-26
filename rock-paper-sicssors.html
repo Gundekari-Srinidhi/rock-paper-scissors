@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock-paper-scissors</title>
+    </head>
+    <style>
+        body{
+            background-color:rgb(25, 25, 25);
+            color:white;
+            font-family: Arial;
+        }
+        .head{
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .move-img{
+            width:50px;
+            height: 50px;
+        }
+        .move-button{
+            background-color: transparent;
+            border:3px solid white;
+            width:120px;
+            height:120px;
+            border-radius: 60px;
+            margin-right: 10px;
+            cursor:pointer;
+        }
+        .result{
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+        .score{
+            margin-top: 60px;
+        }
+        .reset-but{
+            background-color: white;
+            border: none;
+            font-size: 15px;
+            padding: 8px 15px;
+            cursor:pointer;
+        }
+    </style>
+    <body>
+        <p class="head"> Rock Paper Scissors</p>
+        <button onclick="
+          play('rock');
+        " class="move-button">
+        <img src="css/rock-emoji.png" class="move-img"></button>
+        
+
+        <button onclick="
+            play('paper');
+        " class="move-button">
+            <img src="css/paper-emoji.png" class="move-img"></button>
+        <button onclick="
+            play('scissors');
+        " class="move-button">
+        <img src="css/scissors-emoji.png" class="move-img"></button>
+        <p class="js-result result"></p>
+        <p class="js-moves score"></p>
+        <p class="js-marks"></p>
+        <button onclick="
+            score.wins=0;
+            score.losses=0;
+            score.ties=0;
+            localStorage.removeItem('score');
+            updatescore();
+        " class="reset-but">Reset Score</button>
+        <script>
+            const score=JSON.parse(localStorage.getItem('score')) || {
+                wins:0,
+                losses:0,
+                ties:0,
+            }
+            updatescore();
+            function play(playerMove){
+                const computerMove = pickComputerMove();
+
+                let res = '';
+
+                if(playerMove ==='scissors'){
+                    if(computerMove === 'rock'){
+                        res='you lose';
+                    }else if(computerMove === 'paper'){
+                        res='you win';
+                    }else if(computerMove === 'scissors'){
+                        res='tie';
+                    }
+                }
+
+
+                else if(playerMove==='paper'){
+                    if(computerMove === 'rock'){
+                    res='you lose';
+                    }
+                    else if(computerMove === 'paper'){
+                        res='tie';
+                    }
+                    if(computerMove === 'scissors'){
+                        res='you lose';
+                    }
+                }
+
+                
+                else if(playerMove==='rock'){
+                    if(computerMove === 'rock'){
+                        res='tie';
+                    }
+                    else if(computerMove === 'paper'){
+                        res='you lose';
+                    }
+                    if(computerMove === 'scissors'){
+                        res='you win';
+                    } 
+                }
+                if (res=='you win'){
+                    score.wins+=1;
+                }
+                else if(res=='you lose'){
+                    score.losses+=1;
+                }
+                else if(res=='tie'){
+                    score.ties+=1;
+                }
+                localStorage.setItem('score',JSON.stringify(score));
+
+                updatescore(); 
+                document.querySelector('.js-result').innerHTML=`${res}`;
+                document.querySelector('.js-moves').innerHTML=`You <img src="css/${playerMove}-emoji.png" class="move-img"> <img src="css/${computerMove}-emoji.png" class="move-img">`;
+            
+                }
+                
+            function updatescore(){
+                document.querySelector('.js-marks').innerHTML=
+                    `wins:${score.wins},losses:${score.losses},ties:${score.ties}`;
+            }
+            function pickComputerMove(){
+                const randomNumber = Math.random();
+                let computerMove = '';
+                
+                if(randomNumber >= 0 && randomNumber <= 1/3){
+                    computerMove='rock';
+                }
+                else if(randomNumber >= 1/3 && randomNumber <= 2/3){
+                    computerMove='paper';
+                }
+                else if(randomNumber >= 2/3 && randomNumber <= 1){
+                    computerMove='scissors';
+                }
+
+                return computerMove;
+                
+            }
+        </script>
+    </body>
+</html>
+
+
