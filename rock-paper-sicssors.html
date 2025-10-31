@@ -50,18 +50,14 @@
 
         <button class="move-button js-paper">
             <img src="css/paper-emoji.png" class="move-img"></button>
+
         <button  class="move-button js-scissors">
         <img src="css/scissors-emoji.png" class="move-img"></button>
+
         <p class="js-result result"></p>
         <p class="js-moves score"></p>
         <p class="js-marks"></p>
-        <button onclick="
-            score.wins=0;
-            score.losses=0;
-            score.ties=0;
-            localStorage.removeItem('score');
-            updatescore();
-        " class="reset-but">Reset Score</button>
+        <button class="reset-but js-reset">Reset Score</button>
         <script>
             const score=JSON.parse(localStorage.getItem('score')) || {
                 wins:0,
@@ -135,7 +131,13 @@
                 document.querySelector('.js-moves').innerHTML=`You <img src="css/${playerMove}-emoji.png" class="move-img"> <img src="css/${computerMove}-emoji.png" class="move-img">`;
             
                 }
-                
+            document.querySelector('.js-reset').addEventListener('click',()=>{
+                score.wins=0;
+                score.losses=0;
+                score.ties=0;
+                localStorage.removeItem('score');
+                updatescore();
+            })
             function updatescore(){
                 document.querySelector('.js-marks').innerHTML=
                     `wins:${score.wins},losses:${score.losses},ties:${score.ties}`;
